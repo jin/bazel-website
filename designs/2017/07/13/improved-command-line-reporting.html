@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2017/07/13/improved-command-line-reporting.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-improved-command-line-reporting-in-bazel">Design Document: Improved command line reporting in Bazel</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -194,15 +188,14 @@ user’s command line, and are occasionally incorrect.</p>
 
 <p>The output information in the BEP is currently as follows:</p>
 
-<div class="language-proto highlighter-rouge"><pre class="highlight"><code><span class="kd">message</span> <span class="nc">OptionsParsed</span> <span class="p">{</span>
+<div class="language-proto highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">message</span> <span class="nc">OptionsParsed</span> <span class="p">{</span>
   <span class="k">repeated</span> <span class="kt">string</span> <span class="na">startup_options</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
   <span class="k">repeated</span> <span class="kt">string</span> <span class="na">explicit_startup_options</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
   <span class="k">repeated</span> <span class="kt">string</span> <span class="na">cmd_line</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
   <span class="k">repeated</span> <span class="kt">string</span> <span class="na">explicit_cmd_line</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
   <span class="n">blaze.invocation_policy.InvocationPolicy</span> <span class="na">invocation_policy</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Startup options, the options that go before the command, are listed in two ways:</p>
 
@@ -873,6 +866,38 @@ documentation generation.</li>
 </ul>
 
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Improved Command Line Reporting&body=Documentation URL: https://docs.bazel.build/designs/2017/07/13/improved-command-line-reporting.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#background">Background</a></li>
+<li class="toc-entry toc-h2"><a href="#goals">Goals</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#non-goals">Non-Goals</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#proposed-improvements---high-level-view">Proposed Improvements - High level view</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#more-command-lines">More command lines</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#work-required">Work Required</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#overview">Overview</a></li>
+<li class="toc-entry toc-h3"><a href="#passing-the-bazel-invoking-tools-command-line-to-the-server">Passing the Bazel-invoking tool’s command line to the server</a></li>
+<li class="toc-entry toc-h3"><a href="#command-line-proto-for-reporting-command-lines">“Command line” proto for reporting command lines</a></li>
+<li class="toc-entry toc-h3"><a href="#required-optionsparser-refactoring">Required OptionsParser refactoring</a></li>
+<li class="toc-entry toc-h3"><a href="#force-the-client-to-share-its-knowledge-of-the-initial-command-line">Force the client to share its knowledge of the initial command line</a></li>
+<li class="toc-entry toc-h3"><a href="#literalness-vs-canonicalization">Literalness vs. Canonicalization</a></li>
+<li class="toc-entry toc-h3"><a href="#flag-categorization-and-tagging">Flag categorization and tagging</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

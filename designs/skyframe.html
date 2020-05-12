@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/skyframe.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="skyframe">Skyframe</h1>
 
 <p class="lead">The parallel evaluation and incrementality model of Bazel</p>
@@ -369,6 +363,22 @@ discrepancy (note that <code class="highlighter-rouge">ActionExecutionValue</cod
 execution phase on Skyframe).</li>
 </ul>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Skyframe&body=Documentation URL: https://docs.bazel.build/designs/skyframe.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#data-model">Data model</a></li>
+<li class="toc-entry toc-h2"><a href="#evaluation">Evaluation</a></li>
+<li class="toc-entry toc-h2"><a href="#incrementality">Incrementality</a></li>
+<li class="toc-entry toc-h2"><a href="#incremental-linking--compilation">Incremental Linking / Compilation</a></li>
+<li class="toc-entry toc-h2"><a href="#restarting-skyfunctions">Restarting SkyFunctions</a></li>
+<li class="toc-entry toc-h2"><a href="#mapping-to-bazel-concepts">Mapping to Bazel concepts</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

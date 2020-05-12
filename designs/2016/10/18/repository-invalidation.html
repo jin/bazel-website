@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/10/18/repository-invalidation.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-invalidation-of-remote-repositories">Design Document: Invalidation of remote repositories</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -244,9 +238,8 @@ repository. An optional attribute <code class="highlighter-rouge">environ</code>
 method, taking a list of strings and would trigger invalidation of the
 repository on any of change to those environment variables. E.g.:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">my_repo</span> <span class="o">=</span> <span class="n">repository_rule</span><span class="p">(</span><span class="n">impl</span> <span class="o">=</span> <span class="n">_impl</span><span class="p">,</span> <span class="n">environ</span> <span class="o">=</span> <span class="p">[</span><span class="s">"FOO"</span><span class="p">,</span> <span class="s">"BAR"</span><span class="p">])</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_repo</span> <span class="o">=</span> <span class="n">repository_rule</span><span class="p">(</span><span class="n">impl</span> <span class="o">=</span> <span class="n">_impl</span><span class="p">,</span> <span class="n">environ</span> <span class="o">=</span> <span class="p">[</span><span class="s">"FOO"</span><span class="p">,</span> <span class="s">"BAR"</span><span class="p">])</span>
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">my_repo</code> would be refetched on any change to the environment
 variables <code class="highlighter-rouge">FOO</code> or <code class="highlighter-rouge">BAR</code> but not if the environment variable <code class="highlighter-rouge">BAZ</code>
@@ -261,8 +254,8 @@ or transmitted to
 will take values from the <code class="highlighter-rouge">--action_env</code> flag, when specified. I.e. if
 <code class="highlighter-rouge">--action_env FOO=BAR --action_env BAR</code> are specified, and the
 environment set <code class="highlighter-rouge">FOO=BAZ</code>, <code class="highlighter-rouge">BAR=FOO</code>, <code class="highlighter-rouge">BAZ=BAR</code>, then the actual
-<code class="highlighter-rouge">repository_ctx.os.environ</code> map would contain <code class="highlighter-rouge"><span class="p">{</span><span class="nt">"FOO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w"> </span><span class="nt">"BAR"</span><span class="p">:</span><span class="w">
-</span><span class="s2">"FOO"</span><span class="p">,</span><span class="w"> </span><span class="nt">"BAZ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="w"> </span><span class="p">}</span></code>. This would ensure that the environment seen by
+<code class="highlighter-rouge">repository_ctx.os.environ</code> map would contain <code class="highlighter-rouge">{"FOO": "BAR", "BAR":
+"FOO", "BAZ": "BAR" }</code>. This would ensure that the environment seen by
 repository rules is consistent with the one seen by actions (a
 repository rule see more than an action, leaving the rule
 writer the ability to filter the environment more finely).</p>
@@ -336,6 +329,25 @@ will be passed to the <code class="highlighter-rouge">SkylarkRepositoryContext</
 manifest.</li>
 </ol>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Invalidation of remote repositories&body=Documentation URL: https://docs.bazel.build/designs/2016/10/18/repository-invalidation.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#state-at-commit-808a651">State at commit 808a651</a></li>
+<li class="toc-entry toc-h2"><a href="#shortcomings">Shortcomings</a></li>
+<li class="toc-entry toc-h2"><a href="#proposed-solution">Proposed solution</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#invalidation-on-the-environment">Invalidation on the environment</a></li>
+<li class="toc-entry toc-h3"><a href="#serialization-of-skyframe-dependencies">Serialization of Skyframe dependencies</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#implementation-plan">Implementation plan</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

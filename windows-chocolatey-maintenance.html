@@ -33,7 +33,7 @@
     <link rel="canonical" href="/windows-chocolatey-maintenance.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="maintaining-bazel-chocolatey-package-on-windows">Maintaining Bazel Chocolatey package on Windows</h1>
 
 <p><strong>NOTE:</strong> The Chocolatey package is experimental; please provide feedback
@@ -194,11 +188,10 @@ via <code class="highlighter-rouge">choco apikey -k &lt;your key here&gt; -s htt
 
 <p>Compile bazel with msys2 shell and <code class="highlighter-rouge">compile.sh</code>.</p>
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code><span class="nb">pushd </span>scripts/packages/chocolatey
-  ./build.ps1 -version 0.3.2 -mode <span class="nb">local
-popd</span>
-</code></pre>
-</div>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">pushd</span><span class="w"> </span><span class="nx">scripts/packages/chocolatey</span><span class="w">
+  </span><span class="o">.</span><span class="nf">/build.ps1</span><span class="w"> </span><span class="nt">-version</span><span class="w"> </span><span class="nx">0.3.2</span><span class="w"> </span><span class="nt">-mode</span><span class="w"> </span><span class="nx">local</span><span class="w">
+</span><span class="nf">popd</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Should result in <code class="highlighter-rouge">scripts/packages/chocolatey/bazel.&lt;version&gt;.nupkg</code> being
 created.</p>
@@ -226,10 +219,9 @@ created.</p>
   <li>
     <p>Test the uninstall</p>
 
-    <div class="language-sh highlighter-rouge"><pre class="highlight"><code> choco uninstall bazel
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code> choco uninstall bazel
  <span class="c"># should remove bazel from the system</span>
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -240,16 +232,29 @@ created.</p>
 <p>Modify <code class="highlighter-rouge">tools/parameters.json</code> for the new release’s URI and checksum once the
 release has been published to github releases.</p>
 
-<div class="language-powershell highlighter-rouge"><pre class="highlight"><code>./build.ps1 -version &lt;version&gt; -isRelease
-./test.ps1 -version &lt;version&gt;
-<span class="c1"># if the test.ps1 passes</span>
-choco push bazel.x.y.z.nupkg --source https://chocolatey.org/
-</code></pre>
-</div>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="nf">/build.ps1</span><span class="w"> </span><span class="nt">-version</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">version</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-isRelease</span><span class="w">
+</span><span class="o">.</span><span class="nf">/test.ps1</span><span class="w"> </span><span class="nt">-version</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">version</span><span class="err">&gt;</span><span class="w">
+</span><span class="c"># if the test.ps1 passes</span><span class="w">
+</span><span class="nf">choco</span><span class="w"> </span><span class="nx">push</span><span class="w"> </span><span class="nx">bazel.x.y.z.nupkg</span><span class="w"> </span><span class="nt">--source</span><span class="w"> </span><span class="nx">https://chocolatey.org/</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Chocolatey.org will then run automated checks and respond to the push via email
 to the maintainers.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Windows Chocolatey maintenance&body=Documentation URL: https://docs.bazel.build/windows-chocolatey-maintenance.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#prerequisites">Prerequisites</a></li>
+<li class="toc-entry toc-h2"><a href="#build">Build</a></li>
+<li class="toc-entry toc-h2"><a href="#test">Test</a></li>
+<li class="toc-entry toc-h2"><a href="#release">Release</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

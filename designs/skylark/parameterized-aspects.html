@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/skylark/parameterized-aspects.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-parameterized-skylark-aspects">Design Document: Parameterized Skylark Aspects</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Skylark.
@@ -265,40 +259,39 @@ of possible parameter values defined in advance.</p>
 
 <p>We introduce the proposal by example (the discussion is below):</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">SUPPORTED_API_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">"1"</span><span class="p">,</span><span class="s">"2"</span><span class="p">,</span><span class="s">"3"</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SUPPORTED_API_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">"1"</span><span class="p">,</span><span class="s">"2"</span><span class="p">,</span><span class="s">"3"</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">_py_aspect_attrs</span><span class="p">(</span><span class="n">api_version</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">api_version</span> <span class="o">=</span> <span class="s">"1"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span> <span class="s">'_protoc'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="s">"//tools/protoc:v1"</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="s">'_protoc'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="s">"//tools/protoc:v1"</span><span class="p">)</span> <span class="p">}</span>
     <span class="k">else</span> <span class="k">if</span> <span class="n">api_version</span> <span class="o">==</span> <span class="s">"2"</span><span class="p">:</span>
-<span class="err">…</span><span class="o">.</span>
+<span class="err">…</span><span class="p">.</span>
 
 <span class="k">def</span> <span class="nf">_py_aspect_impl</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">api_version</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> <span class="err">…</span><span class="o">.</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">.</span><span class="n">api_version</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> <span class="err">…</span><span class="p">.</span>
 <span class="n">py_proto_aspect</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">_py_aspect_impl</span><span class="p">,</span>
-    <span class="c"># params declare all aspect parameters with all possible values</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'api_version'</span> <span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">SUPPORTED_API_VERSIONS</span><span class="p">)</span> <span class="p">},</span>
+    <span class="c1"># params declare all aspect parameters with all possible values
+</span>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'api_version'</span> <span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">SUPPORTED_API_VERSIONS</span><span class="p">)</span> <span class="p">},</span>
     <span class="n">attr_aspects</span> <span class="o">=</span> <span class="p">[</span><span class="s">'deps'</span><span class="p">],</span>
-    <span class="c"># rhs of attrs can still be dictionary if no dependencies on params</span>
-    <span class="n">attrs</span> <span class="o">=</span> <span class="n">_py_aspect_attrs</span><span class="p">,</span>
+    <span class="c1"># rhs of attrs can still be dictionary if no dependencies on params
+</span>    <span class="n">attrs</span> <span class="o">=</span> <span class="n">_py_aspect_attrs</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="c"># Can be omitted, see below.</span>
-<span class="k">def</span> <span class="nf">_py_proto_library_parameter_extractor</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">,</span> <span class="n">some_other_attr</span><span class="p">):</span>
+<span class="c1"># Can be omitted, see below.
+</span><span class="k">def</span> <span class="nf">_py_proto_library_parameter_extractor</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">,</span> <span class="n">some_other_attr</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span> <span class="s">'api_version'</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">),</span> <span class="p">}</span>
 <span class="n">py_proto_library</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">_py_proto_library_impl</span><span class="p">,</span>
     <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">'py_api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="nb">int</span><span class="p">()</span>
-        <span class="s">'deps'</span><span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">label_list</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">py_proto_aspect</span><span class="p">,</span>
-                <span class="c"># Can be omitted: the default extractor</span>
-                <span class="c"># just strs all rule attributes with the same</span>
-                <span class="c"># names as aspect parameters.</span>
-                <span class="n">aspect_parameter_extractor</span> <span class="o">=</span> <span class="n">_py_proto_library_parameter_extractor</span><span class="p">,</span>
+        <span class="s">'py_api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="nb">int</span><span class="p">()</span>
+        <span class="s">'deps'</span><span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">label_list</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">py_proto_aspect</span><span class="p">,</span>
+                <span class="c1"># Can be omitted: the default extractor
+</span>                <span class="c1"># just strs all rule attributes with the same
+</span>                <span class="c1"># names as aspect parameters.
+</span>                <span class="n">aspect_parameter_extractor</span> <span class="o">=</span> <span class="n">_py_proto_library_parameter_extractor</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="s">'some_other_attr'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span>
+        <span class="s">'some_other_attr'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">string</span><span class="p">(),</span>
     <span class="p">}</span>
 <span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here are the elements we introduce:</p>
 
@@ -380,51 +373,50 @@ explicit attributes to have <code class="highlighter-rouge">values</code> declar
 
 <p>Here is how the previous example will look like in this proposal:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">SUPPORTED_API_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">"1"</span><span class="p">,</span><span class="s">"2"</span><span class="p">,</span><span class="s">"3"</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SUPPORTED_API_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">"1"</span><span class="p">,</span><span class="s">"2"</span><span class="p">,</span><span class="s">"3"</span><span class="p">]</span>
 
-<span class="c"># For rules, configured default function has access to cfg as well, we</span>
-<span class="c"># do not support it in aspects</span>
-<span class="k">def</span> <span class="nf">_py_aspect_protoc</span><span class="p">(</span><span class="n">attr_map</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">attr_map</span><span class="o">.</span><span class="n">api_version</span> <span class="o">=</span> <span class="s">"1"</span><span class="p">:</span>
+<span class="c1"># For rules, configured default function has access to cfg as well, we
+# do not support it in aspects
+</span><span class="k">def</span> <span class="nf">_py_aspect_protoc</span><span class="p">(</span><span class="n">attr_map</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">attr_map</span><span class="p">.</span><span class="n">api_version</span> <span class="o">=</span> <span class="s">"1"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Label</span><span class="p">(</span><span class="s">"//tools/protoc:v1"</span><span class="p">)</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="n">attr_map</span><span class="o">.</span><span class="n">api_version</span> <span class="s">"2"</span><span class="p">:</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">attr_map</span><span class="p">.</span><span class="n">api_version</span> <span class="s">"2"</span><span class="p">:</span>
         <span class="err">…</span>
 
 <span class="k">def</span> <span class="nf">_py_aspect_impl</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">ctx</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">api_version</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> <span class="err">…</span><span class="o">.</span>
+    <span class="k">if</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">api_version</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span> <span class="err">…</span><span class="p">.</span>
 
 <span class="n">py_proto_aspect</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">_py_aspect_impl</span><span class="p">,</span>
     <span class="n">attr_aspects</span> <span class="o">=</span> <span class="p">[</span><span class="s">'deps'</span><span class="p">],</span>
     <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="c"># For aspect implicit attributes, we allow computed defaults.</span>
-        <span class="c"># We still require defaults for all implicit attributes</span>
-        <span class="s">'_protoc'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="n">_py_aspect_protoc</span><span class="p">)</span>
-        <span class="c"># We allow non-implicit attributes. They MUST declare a range of</span>
-        <span class="c"># possible values, and they MUST be of a limited set of types</span>
-        <span class="c"># (initially just strings)</span>
-        <span class="s">'api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="n">SUPPORTED_API_VERSIONS</span><span class="p">)</span>
+        <span class="c1"># For aspect implicit attributes, we allow computed defaults.
+</span>        <span class="c1"># We still require defaults for all implicit attributes
+</span>        <span class="s">'_protoc'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">default</span> <span class="o">=</span> <span class="n">_py_aspect_protoc</span><span class="p">)</span>
+        <span class="c1"># We allow non-implicit attributes. They MUST declare a range of
+</span>        <span class="c1"># possible values, and they MUST be of a limited set of types
+</span>        <span class="c1"># (initially just strings)
+</span>        <span class="s">'api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="n">SUPPORTED_API_VERSIONS</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">)</span>
 
 
-<span class="c"># Can be omitted, see below.</span>
-<span class="k">def</span> <span class="nf">_py_proto_library_parameter_extractor</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">,</span> <span class="n">some_other_attr</span><span class="p">):</span>
+<span class="c1"># Can be omitted, see below.
+</span><span class="k">def</span> <span class="nf">_py_proto_library_parameter_extractor</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">,</span> <span class="n">some_other_attr</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span> <span class="s">'api_version'</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">py_api_version</span><span class="p">),</span> <span class="p">}</span>
 <span class="n">py_proto_library</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">_py_proto_library_impl</span><span class="p">,</span>
     <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">'py_api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="nb">int</span><span class="p">()</span>
-        <span class="s">'deps'</span><span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">label_list</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">py_proto_aspect</span><span class="p">,</span>
-                <span class="c"># Can be omitted: the default extractor</span>
-                <span class="c"># just passes all rule attributes with the same</span>
-                <span class="c"># names as aspect non-implicit attributes</span>
-                <span class="c"># (aka "parameters").</span>
-                <span class="n">aspect_parameter_extractor</span> <span class="o">=</span> <span class="n">_py_proto_library_parameter_extractor</span><span class="p">,</span>
+        <span class="s">'py_api_version'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="nb">int</span><span class="p">()</span>
+        <span class="s">'deps'</span><span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">label_list</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">py_proto_aspect</span><span class="p">,</span>
+                <span class="c1"># Can be omitted: the default extractor
+</span>                <span class="c1"># just passes all rule attributes with the same
+</span>                <span class="c1"># names as aspect non-implicit attributes
+</span>                <span class="c1"># (aka "parameters").
+</span>                <span class="n">aspect_parameter_extractor</span> <span class="o">=</span> <span class="n">_py_proto_library_parameter_extractor</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="s">'some_other_attr'</span> <span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">string</span><span class="p">(),</span>
+        <span class="s">'some_other_attr'</span> <span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">string</span><span class="p">(),</span>
     <span class="p">}</span>
 <span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here are the elements we introduce:</p>
 
@@ -503,6 +495,26 @@ change to Attribute.SkylarkRuleAspect (most of error handling should
 be in place by that stage).</p>
 
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Parameterized Skylark Aspects&body=Documentation URL: https://docs.bazel.build/designs/skylark/parameterized-aspects.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#proposal-1">Proposal #1</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#implementation-stages-for-proposal-1">Implementation stages for proposal #1</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#proposal-2-alternative-to-1">Proposal #2 (alternative to #1)</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#implementation-stages-for-proposal-2">Implementation stages for proposal #2</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

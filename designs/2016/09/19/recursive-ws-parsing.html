@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/09/19/recursive-ws-parsing.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-recursive-workspace-file-parsing">Design Document: Recursive WORKSPACE file parsing</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -231,13 +225,12 @@ versions:</p>
 
 <p>In this case, Bazel would error out with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ERROR: Conflicting definitions of 'foo': bazel-external/y/WORKSPACE:2 repository(name = 'foo' version = '1')
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: Conflicting definitions of 'foo': bazel-external/y/WORKSPACE:2 repository(name = 'foo' version = '1')
   requested by bazel-external/x/WORKSPACE:2 repository(name = 'y')
   requested by WORKSPACE:3 repository(name = 'x')
 vs. bazel-external/a/WORKSPACE:2 repository(name = 'foo' version = '2')
   requested by WORKSPACE:2 repository(name = 'a')
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is also the case with diamond dependencies:</p>
 
@@ -245,13 +238,12 @@ vs. bazel-external/a/WORKSPACE:2 repository(name = 'foo' version = '2')
 
 <p>This would print:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ERROR: Conflicting definitions of 'foo': bazel-external/x/WORKSPACE:2 repository(name = 'foo' version = '2')
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: Conflicting definitions of 'foo': bazel-external/x/WORKSPACE:2 repository(name = 'foo' version = '2')
   requested by WORKSPACE:2 repository(name = 'x')
 vs. bazel-external/z/WORKSPACE:2 repository(name = 'foo' version = '1')
   requested by bazel-external/y/WORKSPACE:2 repository(name = 'z')
   requested by WORKSPACE:3 repository(name = 'y')
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="upgrade-path">Upgrade path</h2>
 
@@ -283,7 +275,7 @@ but will have better performance.</li>
 some weird effects: suppose we have the diamond dependency above, and the user’s
 BUILD file contains:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cc_library(
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cc_library(
     name = "bar",
     deps = ["@x//:dep"],  # using @foo version 2
 )
@@ -292,8 +284,7 @@ cc_library(
     name = "baz",
     deps = ["@y//:dep"],  # using @foo version 1
 )
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If they build :bar and their coworker builds :baz, the two builds will work and
 get different versions of @foo.  However, as soon as one of them tries to build
@@ -377,6 +368,31 @@ does a good job outlining many of these challenges, but their suggested approach
 (use semantic versioning for dependency resolution) cannot be used by Bazel for
 the general case.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Recursive WORKSPACE file parsing&body=Documentation URL: https://docs.bazel.build/designs/2016/09/19/recursive-ws-parsing.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#objective">Objective</a></li>
+<li class="toc-entry toc-h2"><a href="#non-goals">Non-Goals</a></li>
+<li class="toc-entry toc-h2"><a href="#resolution">Resolution</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#defined-in-the-main-repositorys-workspace-file">Defined in the main repository’s WORKSPACE file</a></li>
+<li class="toc-entry toc-h3"><a href="#in-a-line">In a line</a></li>
+<li class="toc-entry toc-h3"><a href="#different-lines">Different lines</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#upgrade-path">Upgrade path</a></li>
+<li class="toc-entry toc-h2"><a href="#implementation">Implementation</a></li>
+<li class="toc-entry toc-h2"><a href="#supplementary-changes">Supplementary changes</a></li>
+<li class="toc-entry toc-h2"><a href="#concerns">Concerns</a></li>
+<li class="toc-entry toc-h2"><a href="#thoughts-on-future-development">Thoughts on future development</a></li>
+<li class="toc-entry toc-h2"><a href="#references">References</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

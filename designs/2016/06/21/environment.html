@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/06/21/environment.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-specifying-environment-variables-for-actions">Design Document: Specifying environment variables for actions</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -362,13 +356,12 @@ projects a smooth
 transition to the new set up, the global Bazel rc-file provided by upstream
 will have the following content.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>build --action_env=PATH
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>build --action_env=PATH
 build --action_env=LD_LIBRARY_PATH
 build --action_env=TMPDIR
 build --test_env=PATH
 build --test_env=LD_LIBRARY_PATH
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="bazels-own-dependency-on-path">Bazel’s own dependency on <code class="highlighter-rouge">PATH</code></h2>
 
@@ -495,6 +488,33 @@ the appropriate scope (global, machine-dependent, user-spefic, project-specific,
 specific to the user-project pair) in a conflict-free way by the entity
 in charge of that scope.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Specifying environment variables&body=Documentation URL: https://docs.bazel.build/designs/2016/06/21/environment.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#current-shortcomings">Current shortcomings</a></li>
+<li class="toc-entry toc-h2"><a href="#proposed-solution">Proposed solution</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#new-flag---action_env">New flag --action_env</a></li>
+<li class="toc-entry toc-h3"><a href="#list-of-rc-files-read-by-bazel">List of rc-files read by Bazel</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#example-usages-of-environment-specifications">Example usages of environment specifications</a></li>
+<li class="toc-entry toc-h2"><a href="#transition-plan">Transition plan</a></li>
+<li class="toc-entry toc-h2"><a href="#bazels-own-dependency-on-path">Bazel’s own dependency on PATH</a></li>
+<li class="toc-entry toc-h2"><a href="#reasons-for-the-design-choices-risks-and-alternatives-considered">Reasons for the Design Choices, Risks, and Alternatives Considered</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#conflicting-interests-on-the-environment-influencing-actions">Conflicting Interests on the environment influencing actions</a></li>
+<li class="toc-entry toc-h3"><a href="#generic-solutions-versus-special-casing">Generic Solutions versus Special Casing</a></li>
+<li class="toc-entry toc-h3"><a href="#source-of-knowledge-for-needed-environment-variables">Source of Knowledge for Needed Environment Variables</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

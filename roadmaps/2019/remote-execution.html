@@ -33,7 +33,7 @@
     <link rel="canonical" href="/roadmaps/2019/remote-execution.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <style>
   .padbottom { padding-bottom: 10px; }
   .donestatus {
@@ -293,6 +287,30 @@
 
 <p>Objective: Bazel can remotely execute a repository_rule. This will allow repository rules to be cached remotely and is a step towards removing the host machine as a bottleneck. It enables important use cases like autogenerating toolchains for the remote environment.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Bazel Remote Execution Roadmap&body=Documentation URL: https://docs.bazel.build/roadmaps/2019/remote-execution.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#goal">Goal</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#usability">Usability</a></li>
+<li class="toc-entry toc-h3"><a href="#builds-without-the-bytes">Builds without the Bytes</a></li>
+<li class="toc-entry toc-h3"><a href="#platforms-for-remote-execution">Platforms for Remote Execution</a></li>
+<li class="toc-entry toc-h3"><a href="#metrics-and-profiler-integration">Metrics and Profiler Integration</a></li>
+<li class="toc-entry toc-h3"><a href="#async-action-execution">Async Action Execution</a></li>
+<li class="toc-entry toc-h3"><a href="#remote-caching">Remote Caching</a></li>
+<li class="toc-entry toc-h3"><a href="#developer-builds">Developer Builds</a></li>
+<li class="toc-entry toc-h3"><a href="#local-caching-and-authentication-proxy">Local Caching and Authentication Proxy</a></li>
+<li class="toc-entry toc-h3"><a href="#virtual-external-repositories">Virtual External Repositories</a></li>
+<li class="toc-entry toc-h3"><a href="#remote-execution-of-repository_rule">Remote Execution of repository_rule</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

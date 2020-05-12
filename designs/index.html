@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-documents">Design Documents</h1>
 
 <p>The list of design documents is published on the <a href="https://github.com/bazelbuild/proposals">Bazel Proposals Repository</a>.</p>
@@ -457,6 +451,46 @@ scrutiny.</li>
 before we’ve invested in an implementation that may not work.</li>
 </ul>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Design Documents&body=Documentation URL: https://docs.bazel.build/designs/&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#when-do-i-need-a-design-document-and-review">When do I need a design document and review?</a></li>
+<li class="toc-entry toc-h2"><a href="#workflow">Workflow</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#write-the-design-document">Write the design document</a></li>
+<li class="toc-entry toc-h3"><a href="#create-a-pull-request">Create a Pull Request</a></li>
+<li class="toc-entry toc-h3"><a href="#announce-the-new-proposal">Announce the new proposal</a></li>
+<li class="toc-entry toc-h3"><a href="#iterate-with-reviewers">Iterate with reviewers</a></li>
+<li class="toc-entry toc-h3"><a href="#update-the-status">Update the status</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#should-i-use-markdown-or-google-docs">Should I use Markdown or Google Docs?</a></li>
+<li class="toc-entry toc-h2"><a href="#using-google-docs">Using Google Docs</a></li>
+<li class="toc-entry toc-h2"><a href="#using-markdown">Using Markdown</a></li>
+<li class="toc-entry toc-h2"><a href="#how-to-choose-a-lead-reviewer">How to choose a lead reviewer?</a></li>
+<li class="toc-entry toc-h2"><a href="#im-a-reviewer-what-are-my-responsibilities">I’m a reviewer. What are my responsibilities?</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#when-you-receive-a-new-proposal">When you receive a new proposal</a></li>
+<li class="toc-entry toc-h3"><a href="#during-the-review-process">During the review process</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#im-a-lead-reviewer-do-i-have-any-additional-responsibilities">I’m a lead reviewer. Do I have any additional responsibilities?</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#during-the-review-process-1">During the review process</a></li>
+<li class="toc-entry toc-h3"><a href="#once-the-design-has-been-approved-by-all-reviewers">Once the design has been approved by all reviewers</a></li>
+<li class="toc-entry toc-h3"><a href="#to-reject-the-design">To reject the design</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#what-is-a-significant-change">What is a significant change?</a></li>
+<li class="toc-entry toc-h2"><a href="#why-do-we-need-design-reviews">Why do we need design reviews?</a></li>
+<li class="toc-entry toc-h2"><a href="#why-do-we-need-a-design-review-policy">Why do we need a design review policy?</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

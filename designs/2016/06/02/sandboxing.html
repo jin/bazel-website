@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/06/02/sandboxing.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-bazel-sandboxing-20">Design Document: Bazel Sandboxing 2.0</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -399,6 +393,25 @@ e.g. in the WORKSPACE file?</em></p>
   <li><a href="https://github.com/bazelbuild/bazel/issues?q=is%3Aopen+is%3Aissue+label%3A%22category%3A+sandboxing%22">Known issues in this area of work</a></li>
 </ul>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Sandboxing&body=Documentation URL: https://docs.bazel.build/designs/2016/06/02/sandboxing.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#current-situation">Current situation</a></li>
+<li class="toc-entry toc-h2"><a href="#proposal">Proposal</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#base-images">Base images</a></li>
+<li class="toc-entry toc-h3"><a href="#handling-of-environment-variables">Handling of environment variables</a></li>
+<li class="toc-entry toc-h3"><a href="#what-files-does-a-sandboxed-process-have-access-to">What files does a sandboxed process have access to?</a></li>
+<li class="toc-entry toc-h3"><a href="#related-links">Related links</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

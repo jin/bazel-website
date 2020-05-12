@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/08/04/extensibility-for-native-rules.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-extensibility-for-native-rules">Design Document: Extensibility For Native Rules</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -185,11 +179,10 @@ Always go to the documentation for current information.</strong></p>
 of native rules from Skylark rules. Typical scenarios can be illustrated by the
 following “sandwich”:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">bread_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"top"</span><span class="p">,</span> <span class="err">…</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bread_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"top"</span><span class="p">,</span> <span class="err">…</span><span class="p">)</span>
 <span class="n">java_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"meat"</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s">":top"</span><span class="p">,</span> <span class="err">…</span><span class="p">],</span> <span class="err">…</span><span class="p">)</span>
 <span class="n">bread_library</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"bottom"</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span><span class="s">":meat"</span><span class="p">,</span> <span class="err">…</span><span class="p">])</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here bread_library is a rule written in Skylark. Here we need three things:</p>
 
@@ -217,44 +210,43 @@ and suggest some practical steps we can take to get there.</p>
 are implemented. Here is how the implementation of bread_library might look
 like:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># Implementation of a rule that transpiles to Java and invokes a native</span>
-<span class="c"># compilation</span>
-<span class="k">def</span> <span class="nf">_bread_library_impl</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
-    <span class="n">bread_sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">src</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">files</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Implementation of a rule that transpiles to Java and invokes a native
+# compilation
+</span><span class="k">def</span> <span class="nf">_bread_library_impl</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="n">bread_sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">src</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">src</span><span class="p">.</span><span class="n">files</span><span class="p">]</span>
     <span class="n">generated_java_files</span> <span class="o">=</span> <span class="n">_invoke_bread_transpiler</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">bread_sources</span><span class="p">)</span>
-    <span class="c"># lang.java.provider is a declared provider for Java</span>
-    <span class="n">java_deps</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="n">lang</span><span class="o">.</span><span class="n">java</span><span class="o">.</span><span class="n">provider</span><span class="p">]</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">deps</span><span class="p">]</span>
-    <span class="c"># create a native compilation action</span>
-    <span class="n">java_p</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">java</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span>
+    <span class="c1"># lang.java.provider is a declared provider for Java
+</span>    <span class="n">java_deps</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="n">lang</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">provider</span><span class="p">]</span> <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">deps</span><span class="p">]</span>
+    <span class="c1"># create a native compilation action
+</span>    <span class="n">java_p</span> <span class="o">=</span> <span class="n">lang</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span>
                 <span class="n">srcs</span> <span class="o">=</span> <span class="n">generated_java_files</span><span class="p">,</span>
-                <span class="c"># information about dependencies is just a lang.java.provider</span>
-                <span class="n">deps</span> <span class="o">=</span> <span class="n">java_deps</span><span class="p">,</span>
-                <span class="o">...</span><span class="p">)</span>
-    <span class="c"># java_p is a lang.java.provider representing the result of compilation</span>
-    <span class="c"># action we return that provider and immediately java_library rule can depend</span>
-    <span class="c"># on us</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">java_p</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+                <span class="c1"># information about dependencies is just a lang.java.provider
+</span>                <span class="n">deps</span> <span class="o">=</span> <span class="n">java_deps</span><span class="p">,</span>
+                <span class="p">...)</span>
+    <span class="c1"># java_p is a lang.java.provider representing the result of compilation
+</span>    <span class="c1"># action we return that provider and immediately java_library rule can depend
+</span>    <span class="c1"># on us
+</span>    <span class="k">return</span> <span class="p">[</span><span class="n">java_p</span><span class="p">,</span> <span class="p">...]</span>
 
-<span class="c"># Implementation of a rule that compiles to JVM bytecode directly</span>
-<span class="k">def</span> <span class="nf">_scala_library_impl</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
-    <span class="c"># collect dependency jars to pass to the compile action</span>
-    <span class="n">dep_jars</span> <span class="o">=</span> <span class="p">[</span><span class="n">dep</span><span class="p">[</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">provider</span><span class="p">]</span><span class="o">.</span><span class="n">jar</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">deps</span><span class="p">]</span>
-    <span class="n">jar_output</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">new_file</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-    <span class="o">...</span> <span class="n">construct</span> <span class="n">compilation</span> <span class="n">actions</span> <span class="o">...</span>
-    <span class="c"># build a provider that passes all transitive information</span>
-    <span class="n">transitive_p</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">java</span><span class="o">.</span><span class="n">transitive</span><span class="p">(</span>
-                      <span class="p">[</span><span class="n">dep</span><span class="p">[</span><span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">provider</span><span class="p">]</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">deps</span><span class="p">])</span>
-    <span class="n">java_p</span> <span class="o">=</span> <span class="n">lang</span><span class="o">.</span><span class="n">java</span><span class="o">.</span><span class="n">provider</span><span class="p">(</span>
+<span class="c1"># Implementation of a rule that compiles to JVM bytecode directly
+</span><span class="k">def</span> <span class="nf">_scala_library_impl</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="c1"># collect dependency jars to pass to the compile action
+</span>    <span class="n">dep_jars</span> <span class="o">=</span> <span class="p">[</span><span class="n">dep</span><span class="p">[</span><span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="n">provider</span><span class="p">].</span><span class="n">jar</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">deps</span><span class="p">]</span>
+    <span class="n">jar_output</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">new_file</span><span class="p">(...)</span>
+    <span class="p">...</span> <span class="n">construct</span> <span class="n">compilation</span> <span class="n">actions</span> <span class="p">...</span>
+    <span class="c1"># build a provider that passes all transitive information
+</span>    <span class="n">transitive_p</span> <span class="o">=</span> <span class="n">lang</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">transitive</span><span class="p">(</span>
+                      <span class="p">[</span><span class="n">dep</span><span class="p">[</span><span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="n">provider</span><span class="p">]</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">deps</span><span class="p">])</span>
+    <span class="n">java_p</span> <span class="o">=</span> <span class="n">lang</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">provider</span><span class="p">(</span>
                 <span class="n">transitive_p</span><span class="p">,</span>
                 <span class="n">jar</span> <span class="o">=</span> <span class="n">jar_output</span><span class="p">,</span>
-                <span class="c"># update transitive information that we care about</span>
-                <span class="n">transitive_jars</span> <span class="o">=</span>
-                    <span class="n">transitive_p</span><span class="o">.</span><span class="n">transitive_jars</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">jar_output</span><span class="p">),</span>
-                    <span class="o">...</span> <span class="n">whatever</span> <span class="n">other</span> <span class="n">information</span> <span class="ow">is</span> <span class="n">needed</span> <span class="o">...</span><span class="p">)</span>
-    <span class="c"># return java.lang.provider</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">java_p</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-</code></pre>
-</div>
+                <span class="c1"># update transitive information that we care about
+</span>                <span class="n">transitive_jars</span> <span class="o">=</span>
+                    <span class="n">transitive_p</span><span class="p">.</span><span class="n">transitive_jars</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">jar_output</span><span class="p">),</span>
+                    <span class="p">...</span> <span class="n">whatever</span> <span class="n">other</span> <span class="n">information</span> <span class="ow">is</span> <span class="n">needed</span> <span class="p">...)</span>
+    <span class="c1"># return java.lang.provider
+</span>    <span class="k">return</span> <span class="p">[</span><span class="n">java_p</span><span class="p">,</span> <span class="p">...]</span>
+</code></pre></div></div>
 
 <p>The provider is the glue (“butter”) that connects Skylark rules to native rules
 and also to the native rule implementations exposed to Skylark. Note how the
@@ -325,6 +317,25 @@ with internal API.</p>
 <p>Through the execution of this phase, more and more use cases are covered, and at
 the end the rules are fully extensible.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Extensibility For Native Rules&body=Documentation URL: https://docs.bazel.build/designs/2016/08/04/extensibility-for-native-rules.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#motivation">Motivation</a></li>
+<li class="toc-entry toc-h2"><a href="#extensible-native-rules">Extensible Native Rules</a></li>
+<li class="toc-entry toc-h2"><a href="#how-to-get-there">How to get there</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#phase-1-expose-native-compilation-actions">Phase 1: Expose native compilation actions</a></li>
+<li class="toc-entry toc-h3"><a href="#phase-1a-implementing-javaskylarkapiprovider-on-top-of-black-box">Phase 1a: Implementing JavaSkylarkApiProvider on top of black box</a></li>
+<li class="toc-entry toc-h3"><a href="#phase-2-evolving-the-api-and-opening-up">Phase 2: Evolving the API and opening up</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/05/26/implementing-beautiful-error-messages.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-implementing-beautiful-error-messages-loading-phase">Design Document: Implementing Beautiful Error Messages (Loading Phase)</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -275,21 +269,20 @@ exception type could report typos in rule names.</p>
   </li>
 </ol>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IdentifierEvalException</span> <span class="kd">extends</span> <span class="n">ContextualEvalException</span> <span class="o">{</span>
- <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">TYPOS</span> <span class="o">=</span> <span class="n">Map</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IdentifierEvalException</span> <span class="kd">extends</span> <span class="nc">ContextualEvalException</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="no">TYPOS</span> <span class="o">=</span> <span class="nc">Map</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
     <span class="s">"cclibrary"</span><span class="o">,</span> <span class="s">"cc_library"</span><span class="o">,</span>
     <span class="n">etc</span><span class="o">...</span>
   <span class="o">)</span>
-  <span class="kd">public</span> <span class="nf">IdentifierEvalException</span><span class="o">(</span><span class="n">Identifier</span> <span class="n">identifier</span><span class="o">,</span> <span class="n">Location</span> <span class="n">loc</span><span class="o">)</span> <span class="o">{...}</span>
+  <span class="kd">public</span> <span class="nf">IdentifierEvalException</span><span class="o">(</span><span class="nc">Identifier</span> <span class="n">identifier</span><span class="o">,</span> <span class="nc">Location</span> <span class="n">loc</span><span class="o">)</span> <span class="o">{...}</span>
   <span class="nd">@Override</span>
-  <span class="kd">protected</span> <span class="n">Suggestion</span> <span class="nf">generateSuggestion</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">TYPOS</span><span class="o">.</span><span class="na">keySet</span><span class="o">().</span><span class="na">contains</span><span class="o">(</span><span class="n">identifier</span><span class="o">.</span><span class="na">getName</span><span class="o">())</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="nf">TypoSuggestion</span><span class="o">(</span><span class="n">identifier</span><span class="o">,</span> <span class="n">TYPOS</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">identifier</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
+  <span class="kd">protected</span> <span class="nc">Suggestion</span> <span class="nf">generateSuggestion</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="no">TYPOS</span><span class="o">.</span><span class="na">keySet</span><span class="o">().</span><span class="na">contains</span><span class="o">(</span><span class="n">identifier</span><span class="o">.</span><span class="na">getName</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="nf">TypoSuggestion</span><span class="o">(</span><span class="n">identifier</span><span class="o">,</span> <span class="no">TYPOS</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">identifier</span><span class="o">.</span><span class="na">getName</span><span class="o">()));</span>
     <span class="o">}</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once the plumbing around (1) is in place, we can add subclasses at our leisure
 to provide suggestions.</p>
@@ -300,14 +293,13 @@ messages. Consider this example, from the
 <a href="/designs/2016/05/23/beautiful-error-messages.html">“Beautiful error messages”</a>
 document:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">my_obj</span> <span class="o">=</span> <span class="n">select</span><span class="p">({</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_obj</span> <span class="o">=</span> <span class="n">select</span><span class="p">({</span>
   <span class="s">":something"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
   <span class="s">"other"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
 <span class="p">})</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">my_obj</span><span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <pre>
 <font color="red">ERROR:</font> /test/BUILD:6:5: type 'select' is not iterable.
@@ -354,6 +346,22 @@ strategizing about a good serialization for a `Location` object that
 contains a file pointer.
 </p></p></p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Implementing Beautiful Error Messages (Loading Phase)&body=Documentation URL: https://docs.bazel.build/designs/2016/05/26/implementing-beautiful-error-messages.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h2"><a href="#review-what-needs-to-be-done">Review: What needs to be done</a></li>
+<li class="toc-entry toc-h2"><a href="#current-error-infrastructure">Current Error Infrastructure</a></li>
+<li class="toc-entry toc-h2"><a href="#implementation-context">Implementation: Context</a></li>
+<li class="toc-entry toc-h2"><a href="#implementation-suggestions">Implementation: Suggestions</a></li>
+<li class="toc-entry toc-h2"><a href="#problem-serialization">Problem: Serialization</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

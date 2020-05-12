@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/09/05/build-python-on-windows.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-building-python-on-windows">Design Document: Building Python on Windows</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -249,24 +243,22 @@ Zipper now supports the following semantics:</p>
 
 <p>Examples:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>zipper cC x.zip a/b/lib.py                  <span class="c"># Add file a/b/lib.py</span>
-<span class="gp">$ </span>zipper cC x.zip a/b/__init__.py<span class="o">=</span>            <span class="c"># Add an empty file at a/b/__init__.py</span>
-<span class="gp">$ </span>zipper cC x.zip a/b/main.py<span class="o">=</span>foo/bar/bin.py  <span class="c"># Add file foo/bar/bin.py as a/b/main.py</span>
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>zipper cC x.zip a/b/lib.py                  <span class="c"># Add file a/b/lib.py</span>
+<span class="nv">$ </span>zipper cC x.zip a/b/__init__.py<span class="o">=</span>            <span class="c"># Add an empty file at a/b/__init__.py</span>
+<span class="nv">$ </span>zipper cC x.zip a/b/main.py<span class="o">=</span>foo/bar/bin.py  <span class="c"># Add file foo/bar/bin.py as a/b/main.py</span>
+</code></pre></div></div>
 
 <p>With the help of this feature, we can easily control the directory
 structure in the zip file.</p>
 
 <h4 id="2-build-the-final-python-binary">2. Build the final python binary</h4>
 
-<p>The final python binary is the zip file with a <code class="highlighter-rouge"><span class="c">#!/usr/bin/env python</span></code>
+<p>The final python binary is the zip file with a <code class="highlighter-rouge"><span class="c1">#!/usr/bin/env python</span></code>
 shebang. By doing this, we can run the binary in the following two ways:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">$ </span>./bazel-bin/foo/bar/bin
-<span class="gp">$ </span>python ./bazel-bin/foo/bar/bin
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./bazel-bin/foo/bar/bin
+<span class="nv">$ </span>python ./bazel-bin/foo/bar/bin
+</code></pre></div></div>
 
 <p>And we can use the second way to run the binary from Windows native
 command line(cmd.exe). Since the zip file packages everything in runfiles
@@ -278,6 +270,19 @@ tree, it can be copied to anywhere as a self-contained executable binary.</p>
 as the final binary. By default, it’s enabled on Windows,
 disabled on other platform.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Building Python on Windows&body=Documentation URL: https://docs.bazel.build/designs/2016/09/05/build-python-on-windows.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#motivation">Motivation</a></li>
+<li class="toc-entry toc-h2"><a href="#problem">Problem</a></li>
+<li class="toc-entry toc-h2"><a href="#solution">Solution</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

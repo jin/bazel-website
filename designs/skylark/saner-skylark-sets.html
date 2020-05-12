@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/skylark/saner-skylark-sets.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-saner-skylark-sets">Design Document: Saner Skylark Sets</h1>
 
 <h3 id="sacrificing-superfluous-safety">(Sacrificing Superfluous Safety)</h3>
@@ -276,11 +270,10 @@ change.</p>
 
 <p>Structs, just like tuples, can be (deeply) mutable and immutable:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>l = [27, 42, 30]  # This list is mutable (inside a function definition)
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>l = [27, 42, 30]  # This list is mutable (inside a function definition)
 t = (l, 42)  # This tuple is mutable, since l can be modified
 s = struct(field = l)  # This struct is mutable, since l can be modified
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Only immutable structs will be allowed as elements of sets, similarly to how
 tuples are handled today.</p>
@@ -315,6 +308,30 @@ value check was serialization, but if we are serious about serializing
 configured targets graph, we will need to learn to serialize arbitrary Skylark
 values anyway.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Saner Skylark Sets&body=Documentation URL: https://docs.bazel.build/designs/skylark/saner-skylark-sets.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h3"><a href="#sacrificing-superfluous-safety">(Sacrificing Superfluous Safety)</a></li>
+<li class="toc-entry toc-h2"><a href="#motivation">Motivation</a></li>
+<li class="toc-entry toc-h2"><a href="#understanding-current-behavior">Understanding Current Behavior</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#typing-skylark-sets">Typing Skylark sets</a></li>
+<li class="toc-entry toc-h3"><a href="#providers-and-safe-values">Providers and safe values</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#what-needs-to-change">What needs to change</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#equality-and-mutability-of-structs">Equality and mutability of structs</a></li>
+<li class="toc-entry toc-h3"><a href="#provider-value-safety">Provider value safety</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

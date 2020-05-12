@@ -33,7 +33,7 @@
     <link rel="canonical" href="/contributing.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="contributing-to-bazel">Contributing to Bazel</h1>
 
 <h2 id="how-can-i-help">How can I help?</h2>
@@ -263,23 +257,25 @@ of Bazel.</li>
       <li><code class="highlighter-rouge">git clone https://github.com/bazelbuild/bazel.git</code></li>
     </ul>
   </li>
-  <li>Try to build Bazel:
+  <li>
+    <p>Try to build Bazel (you might need to <a href="https://docs.bazel.build/versions/master/install-compile-source.html#bootstrap-unix">install some
+prerequisites</a>
+first):</p>
+
     <ul>
       <li>
         <p>On Linux/macOS, in Bash/Terminal:</p>
 
-        <div class="highlighter-rouge"><pre class="highlight"><code>cd bazel
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd bazel
 bazel build //src:bazel
-</code></pre>
-        </div>
+</code></pre></div>        </div>
       </li>
       <li>
         <p>On Windows, in the Command Prompt:</p>
 
-        <div class="highlighter-rouge"><pre class="highlight"><code>cd bazel
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd bazel
 bazel --output_user_root=c:\tmp build //src:bazel.exe
-</code></pre>
-        </div>
+</code></pre></div>        </div>
 
         <p>For faster iteration times (but larger binaries), use <code class="highlighter-rouge">//src:bazel-dev.exe</code> instead.</p>
       </li>
@@ -342,12 +338,11 @@ to ensure that we don’t break Bazel when pushing new commits, too.</li>
 <p>Start creating a debug configuration for both C++ and Java in your <code class="highlighter-rouge">.bazelrc</code>
 with the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>build:debug -c dbg
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>build:debug -c dbg
 build:debug --javacopt="-g"
 build:debug --copt="-g"
 build:debug --strip="never"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Then you can rebuild Bazel with <code class="highlighter-rouge">bazel build --config debug //src:bazel</code> and use
 your favorite debugger to start debugging.</p>
@@ -394,6 +389,33 @@ run <code class="highlighter-rouge">jdb -attach localhost:5005</code>.</li>
 
 <p>To get started with the Bazel CI system, see <a href="https://github.com/bazelbuild/continuous-integration/blob/master/buildkite/README.md">Bazel Continuous Integration</a>. To monitor the tests and builds of your Bazel contributions, use the <a href="https://ci.bazel.build/">Bazel CI Dashboard</a>.</p>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Contributing to Bazel&body=Documentation URL: https://docs.bazel.build/contributing.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#how-can-i-help">How can I help?</a></li>
+<li class="toc-entry toc-h2"><a href="#how-can-i-contribute-to-bazel-source-code">How can I contribute to Bazel source code?</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#patch-acceptance-process">Patch Acceptance Process</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#setting-up-your-coding-environment">Setting up your coding environment</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#preparations">Preparations</a></li>
+<li class="toc-entry toc-h3"><a href="#creating-an-intellij-project">Creating an IntelliJ project</a></li>
+<li class="toc-entry toc-h3"><a href="#compiling-bazel">Compiling Bazel</a></li>
+<li class="toc-entry toc-h3"><a href="#debugging-bazel">Debugging Bazel</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#bazels-code-description">Bazel’s code description</a></li>
+<li class="toc-entry toc-h2"><a href="#searching-bazels-source-code">Searching Bazel’s source code</a></li>
+<li class="toc-entry toc-h2"><a href="#using-bazel-continuous-integration">Using Bazel Continuous Integration</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

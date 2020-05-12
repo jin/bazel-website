@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2016/09/30/repository-cache.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="central-cache-for-external-repositories">Central cache for external repositories</h1>
 <h2 id="part-1-caching-httpdownloader-values">Part 1: Caching HttpDownloader values</h2>
 
@@ -264,6 +258,26 @@ copy back to <code class="highlighter-rouge">$output_base/external</code>.</li>
 a http_archive.</li>
 </ul>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Central cache for external repositories&body=Documentation URL: https://docs.bazel.build/designs/2016/09/30/repository-cache.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#part-1-caching-httpdownloader-values">Part 1: Caching HttpDownloader values</a></li>
+<li class="toc-entry toc-h2"><a href="#introduction">Introduction</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#related-issues">Related issues:</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#objective">Objective</a></li>
+<li class="toc-entry toc-h2"><a href="#not-in-scope">Not in scope</a></li>
+<li class="toc-entry toc-h2"><a href="#implementation-plan">Implementation plan</a></li>
+<li class="toc-entry toc-h2"><a href="#cache-structure">Cache structure</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

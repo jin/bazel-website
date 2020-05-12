@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2015/07/02/skylark-remote-repositories.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-skylark-remote-repositories">Design Document: Skylark Remote Repositories</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -230,27 +224,25 @@ behave as expected. Macros would enable to combine remote repositories
 creation and bind into a single rules E.g. <code class="highlighter-rouge">setup_java()</code> would set-up
 all bindings and the local repository needed to build java target:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">setup_java</span><span class="p">():</span>
-  <span class="n">native</span><span class="o">.</span><span class="n">new_local_repository</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="err">“</span><span class="n">jdk</span><span class="o">-</span><span class="n">local</span><span class="err">”</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="err">“</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">jdk8</span><span class="err">”</span><span class="p">,</span> <span class="n">build_file</span> <span class="o">=</span> <span class="err">“</span><span class="n">jdk</span><span class="o">.</span><span class="n">BUILD</span><span class="err">”</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">setup_java</span><span class="p">():</span>
+  <span class="n">native</span><span class="p">.</span><span class="n">new_local_repository</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="err">“</span><span class="n">jdk</span><span class="o">-</span><span class="n">local</span><span class="err">”</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="err">“</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">jdk8</span><span class="err">”</span><span class="p">,</span> <span class="n">build_file</span> <span class="o">=</span> <span class="err">“</span><span class="n">jdk</span><span class="p">.</span><span class="n">BUILD</span><span class="err">”</span><span class="p">)</span>
   <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">[</span><span class="s">"jni_header"</span><span class="p">,</span> <span class="s">"jni_md_header"</span><span class="p">,</span> <span class="s">"langtools"</span><span class="p">,</span> <span class="s">"bootclasspath"</span><span class="p">,</span> <span class="s">"extdir"</span><span class="p">,</span> <span class="s">"toolchain"</span><span class="p">,</span> <span class="s">"jdk"</span><span class="p">,</span> <span class="s">"java"</span><span class="p">,</span> <span class="s">"javac"</span><span class="p">,</span> <span class="s">"jar"</span><span class="p">]:</span>
-    <span class="n">native</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@</span><span class="si">%</span><span class="s">s//:</span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
-  <span class="n">native</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"jni_md_header-linux"</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@</span><span class="si">%</span><span class="s">s//:jni_md_header"</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
-  <span class="n">native</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"jni_md_header-darwin"</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@</span><span class="si">%</span><span class="s">s//:jni_md_header"</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
-</code></pre>
-</div>
+    <span class="n">native</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@%s//:%s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+  <span class="n">native</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"jni_md_header-linux"</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@%s//:jni_md_header"</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+  <span class="n">native</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"jni_md_header-darwin"</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="s">"@%s//:jni_md_header"</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h3 id="remote-repository-rule">Remote repository rule</h3>
 <p>A remote repository rule would be set-up the same way we set-up a
 build rule but with the <code class="highlighter-rouge">repository_rule</code> statement:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">jdk_repository</span> <span class="o">=</span> <span class="n">repository_rule</span><span class="p">(</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jdk_repository</span> <span class="o">=</span> <span class="n">repository_rule</span><span class="p">(</span>
   <span class="n">implementation</span> <span class="o">=</span> <span class="n">my_impl</span><span class="p">,</span>
   <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="err">“</span><span class="n">java_home</span><span class="err">”</span><span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-     <span class="err">“</span><span class="n">java_version</span><span class="err">”</span><span class="p">:</span> <span class="n">attr</span><span class="o">.</span><span class="n">string</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="err">“</span><span class="mf">1.8</span><span class="err">”</span><span class="p">),</span>
+     <span class="err">“</span><span class="n">java_home</span><span class="err">”</span><span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+     <span class="err">“</span><span class="n">java_version</span><span class="err">”</span><span class="p">:</span> <span class="n">attr</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="err">“</span><span class="mf">1.8</span><span class="err">”</span><span class="p">),</span>
   <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This statement takes only 2 arguments: an implementation function and
 a list of attributes. The syntax is similar to the rule statement but
@@ -344,6 +336,26 @@ for handling PyPI</li>
   <li>Extends SkylarkRepositoryContext for handling Docker pull</li>
 </ol>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Skylark Remote Repositories&body=Documentation URL: https://docs.bazel.build/designs/2015/07/02/skylark-remote-repositories.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#context">Context</a></li>
+<li class="toc-entry toc-h2"><a href="#why">Why?</a></li>
+<li class="toc-entry toc-h2"><a href="#user-interface-see-the-jdk-example">User interface (see the JDK example)</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#macros">Macros</a></li>
+<li class="toc-entry toc-h3"><a href="#remote-repository-rule">Remote repository rule</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#how">How?</a></li>
+<li class="toc-entry toc-h2"><a href="#roadmap">Roadmap</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

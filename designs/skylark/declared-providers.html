@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/skylark/declared-providers.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-declared-providers">Design Document: Declared Providers</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Skylark.
@@ -225,7 +219,7 @@ allows easy, gradual piecemeal replacement of them.</p>
 <p>Under the new proposal, a minimum implementation of a custom provider looks like
 this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># rust.bzl
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rust.bzl
 
 # Introduces a provider. `rust_provider` is now both a function
 # that can be used to construct the provider instance,
@@ -244,10 +238,9 @@ rust_library = rule(implementation = _impl,
   # Optional declaration; the rule MUST provide all the
   # providers in this list
   providers = [rust_provider])
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># Example of how to access the provider
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Example of how to access the provider
 
 load(":rust.bzl", "rust_provider")
 
@@ -256,8 +249,7 @@ def _impl(ctx):
   # `rust_provider` is used as a key to access a particular
   # provider
   defines = dep[rust_provider].defines ...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="the-provider-function">The provider function</h4>
 
@@ -286,9 +278,8 @@ cannot be accessed outside that file.</li>
 <code class="highlighter-rouge">executable</code>, <code class="highlighter-rouge">output_groups</code>, etc.). We group them in a single provider,
 <code class="highlighter-rouge">ctx.provider</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>defaults = ctx.provider(files = set(), runfiles = ...)
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defaults = ctx.provider(files = set(), runfiles = ...)
+</code></pre></div></div>
 
 <p>The current set of APIs on Target objects that access these providers
 (<code class="highlighter-rouge">target.files</code>, <code class="highlighter-rouge">target.output_group("name")</code> etc.) will continue to work.</p>
@@ -298,10 +289,9 @@ cannot be accessed outside that file.</li>
 <p>The implementation function can return either a provider, or a list of
 providers. It is an error to return two providers of the same type.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>return [defaults, rust, cc]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return [defaults, rust, cc]
 return ctx.provider(files = set())
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="declaring-providers-returned-by-a-rule">Declaring providers returned by a rule</h4>
 
@@ -315,28 +305,26 @@ argument of a
 function. It is an error if the rule implementation function does not return all
 the providers listed in <code class="highlighter-rouge">providers</code>. It may however return additional providers.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rust_provider = provider()
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rust_provider = provider()
 
 rust_library = rule(implementation = _impl,
   # Optional declaration; the rule MUST provide all the
   # providers in this list
   providers = [rust_provider])
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="migration-path-and-support-for-legacy-providers">Migration path and support for “legacy” providers</h4>
 
 <p>To support current model of returning providers, where they are identified by a
 simple name, we continue to allow providers name in the return struct:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def _impl(ctx):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def _impl(ctx):
   ...
   return struct(
     legacy_provider = struct(...),
     files = set(...),
     providers = [rust])
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This also works for “default” providers, such as “files”, “runfiles” etc.
 However if one of those legacy names is specified, it is an error to have
@@ -345,11 +333,10 @@ ctx.provider instance in the list of <code class="highlighter-rouge">providers</
 <p>We also allow returning a declared provider both directly and with a simple
 name:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def _impl(ctx):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def _impl(ctx):
   ...
   return struct(rust = rust, providers = [rust])
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This allows the rules to mix old and new style, and migrate rule definition to a
 new style without changing all the uses of that rule.</p>
@@ -385,12 +372,11 @@ provider instance returns a string <code class="highlighter-rouge">"struct"</cod
 <p>Provider declarations are a convenient place to add more annotations to
 providers. We propose 2 specific things there:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rust_provider = provider(
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rust_provider = provider(
   doc = "This provider contains Rust information ...",
   fields = ["defines", "transitive_deps"]
 )
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This specifies documentation for the provider and a list of fields that the
 provider can have.</p>
@@ -403,14 +389,13 @@ provider can have.</p>
 the keys are names of fields, and the values are documentation strings about
 individual fields</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rust_provider = provider(
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rust_provider = provider(
   doc = "This provider contains Rust information ...",
   fields = {
     "defines": "doc for define",
     "transitive_deps": "doc for transitive deps,
   })
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="native-providers">Native Providers</h3>
 
@@ -419,7 +404,7 @@ annotations can be developed to facilitate declaring them with little effort.</p
 
 <p>As a strawman example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
  * Hypothetical implementation of Skylark provider value (result of
  * provider(..) function.
  */
@@ -458,9 +443,27 @@ class rustProvider implements TransitiveInfoProvider {
     rustProvider build() { ... }
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Declared Providers&body=Documentation URL: https://docs.bazel.build/designs/skylark/declared-providers.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#motivation">Motivation</a></li>
+<li class="toc-entry toc-h2"><a href="#goals">Goals</a></li>
+<li class="toc-entry toc-h2"><a href="#proposal">Proposal</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#stage-1-solving-the-naming-problem">Stage 1: Solving the Naming Problem</a></li>
+<li class="toc-entry toc-h3"><a href="#stage-2-documentation-and-fields">Stage 2: Documentation and Fields</a></li>
+<li class="toc-entry toc-h3"><a href="#native-providers">Native Providers</a></li>
+</ul>
+</li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

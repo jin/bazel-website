@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2015/03/06/bazel-init.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <p><strong>This design document has been replaced by
 <a href="/designs/2015/07/02/skylark-remote-repositories.html">Skylark Remote Repositories</a>
 and is maintained here just for reference</strong></p>
@@ -335,19 +329,18 @@ provided by Bazel itself and consistent with skylark. It also gives
 immediate support for manipulating BUILD files. So keeping a
 “skylark-like” syntax, the interface would look like:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">configuration</span><span class="p">(</span>
-	<span class="n">name</span><span class="p">,</span>              <span class="c"># name of the tools package to configure</span>
-	<span class="n">autodetect_method</span><span class="p">,</span> <span class="c"># the auto detection method</span>
-	<span class="n">generate_method</span><span class="p">,</span>   <span class="c"># the actual package generation</span>
-	<span class="n">load_method</span><span class="p">,</span>       <span class="c"># A method to load the attributes presented</span>
-	                   <span class="c">#            to the user from the package</span>
-	<span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>          <span class="c"># List of attributes this script propose</span>
-		<span class="s">"jdk_path"</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
-		<span class="s">"__some_other_path"</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>  <span class="c"># not user-settable</span>
-		<span class="s">"jdk_version"</span><span class="p">:</span> <span class="n">Integer</span><span class="p">,</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">configuration</span><span class="p">(</span>
+	<span class="n">name</span><span class="p">,</span>              <span class="c1"># name of the tools package to configure
+</span>	<span class="n">autodetect_method</span><span class="p">,</span> <span class="c1"># the auto detection method
+</span>	<span class="n">generate_method</span><span class="p">,</span>   <span class="c1"># the actual package generation
+</span>	<span class="n">load_method</span><span class="p">,</span>       <span class="c1"># A method to load the attributes presented
+</span>	                   <span class="c1">#            to the user from the package
+</span>	<span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>          <span class="c1"># List of attributes this script propose
+</span>		<span class="s">"jdk_path"</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+		<span class="s">"__some_other_path"</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>  <span class="c1"># not user-settable
+</span>		<span class="s">"jdk_version"</span><span class="p">:</span> <span class="n">Integer</span><span class="p">,</span>
 	<span class="p">})</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Given that interface, an initial run of <code class="highlighter-rouge">bazel init</code> would do:</p>
 
@@ -422,66 +415,92 @@ labels so that a user can actually specify remote repository labels).</li>
 
 <p>This is just a quick draft, please feel free to propose improvements:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># env is the environment, attrs are the values set either from the command-line</span>
-<span class="c"># or from loading the package</span>
-<span class="k">def</span> <span class="nf">autodetect_method</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
-  <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="o">.</span><span class="n">java_version</span><span class="p">:</span>  <span class="c"># If not given in the command line nor loaded</span>
-    <span class="n">attrs</span><span class="o">.</span><span class="n">java_version</span> <span class="o">=</span> <span class="mi">8</span>
-  <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s">"JDK_HOME"</span><span class="p">):</span>
-      <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"JDK_HOME"</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">env</span><span class="o">.</span><span class="n">os</span> <span class="o">=</span> <span class="s">"darwin"</span><span class="p">:</span>
-      <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s">"/usr/libexec/java_home -v 1."</span> <span class="o">+</span> <span class="n">attrs</span><span class="o">.</span><span class="n">java_version</span> <span class="o">+</span> <span class="s">"+"</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># env is the environment, attrs are the values set either from the command-line
+# or from loading the package
+</span><span class="k">def</span> <span class="nf">autodetect_method</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="p">.</span><span class="n">java_version</span><span class="p">:</span>  <span class="c1"># If not given in the command line nor loaded
+</span>    <span class="n">attrs</span><span class="p">.</span><span class="n">java_version</span> <span class="o">=</span> <span class="mi">8</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">env</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">"JDK_HOME"</span><span class="p">):</span>
+      <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"JDK_HOME"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">env</span><span class="p">.</span><span class="n">os</span> <span class="o">=</span> <span class="s">"darwin"</span><span class="p">:</span>
+      <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s">"/usr/libexec/java_home -v 1."</span> <span class="o">+</span> <span class="n">attrs</span><span class="p">.</span><span class="n">java_version</span> <span class="o">+</span> <span class="s">"+"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">basename</span><span class="p">(</span><span class="n">readlink</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">java</span><span class="p">))))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span><span class="p">:</span>
+      <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">basename</span><span class="p">(</span><span class="n">basename</span><span class="p">(</span><span class="n">readlink</span><span class="p">(</span><span class="n">env</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">java</span><span class="p">))))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span><span class="p">:</span>
       <span class="n">fail</span><span class="p">(</span><span class="s">"Could not find JDK home, please set it with `bazel init java:jdk_path=/path/to/jdk`"</span><span class="p">)</span>
-   <span class="n">attrs</span><span class="o">.</span><span class="n">__some_other_path</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">glob</span><span class="p">([</span><span class="s">"/usr/bin/java"</span><span class="p">,</span> <span class="s">"/usr/local/bin/java"</span><span class="p">]))</span>
+   <span class="n">attrs</span><span class="p">.</span><span class="n">__some_other_path</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">glob</span><span class="p">([</span><span class="s">"/usr/bin/java"</span><span class="p">,</span> <span class="s">"/usr/local/bin/java"</span><span class="p">]))</span>
 
 
-<span class="c"># attrs is the list of attributes. It basically contains the list of rules</span>
-<span class="c"># we should generate in the corresponding package. Please note</span>
-<span class="c"># That all labels are replaced by relative ones as it should not be able</span>
-<span class="c"># to write out of the package.</span>
-<span class="k">def</span> <span class="nf">generate_method</span><span class="p">(</span><span class="n">attrs</span><span class="p">):</span>
+<span class="c1"># attrs is the list of attributes. It basically contains the list of rules
+# we should generate in the corresponding package. Please note
+# That all labels are replaced by relative ones as it should not be able
+# to write out of the package.
+</span><span class="k">def</span> <span class="nf">generate_method</span><span class="p">(</span><span class="n">attrs</span><span class="p">):</span>
   <span class="n">scratch_file</span><span class="p">(</span><span class="s">"BUILD.jdk"</span><span class="p">,</span> <span class="s">"""
 Content of the jdk BUILD file.
 """</span><span class="p">)</span>
-  <span class="c"># Create binding using local_repository. This should not lie in</span>
-  <span class="c"># the WORKSPACE file but in a separate WORKSPACE file in the hidden</span>
-  <span class="c"># directory.</span>
-  <span class="n">local_repository</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"jdk"</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span><span class="p">,</span> <span class="n">build_file</span> <span class="o">=</span> <span class="s">"BUILD.jdk"</span><span class="p">)</span>
-  <span class="n">bind</span><span class="p">(</span><span class="s">"@jdk//jdk"</span><span class="p">,</span> <span class="s">"jdk"</span><span class="p">)</span>  <span class="c"># also add a filegroup("jdk", "//external:jdk")</span>
-  <span class="n">java_toolchain</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"toolchain"</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">java_version</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">java_version</span><span class="p">)</span>
-  <span class="c"># The magic __BAZEL_*__ variable could be set so we don’t</span>
-  <span class="c"># redownload the repository if possible. This install_target</span>
-  <span class="c"># should leverage the work already done on remote repositories.</span>
-  <span class="c"># This should build and copy the result into the tools directory with</span>
-  <span class="c"># The corresponding exports_files now.</span>
-  <span class="n">install_target</span><span class="p">(</span><span class="n">__BAZEL_REPOSITORY__</span><span class="p">,</span> <span class="n">__BAZEL_VERSION__</span><span class="p">,</span> <span class="s">"//src/java_tools/buildjar:JavaBuilder_deploy.jar"</span><span class="p">)</span>
+  <span class="c1"># Create binding using local_repository. This should not lie in
+</span>  <span class="c1"># the WORKSPACE file but in a separate WORKSPACE file in the hidden
+</span>  <span class="c1"># directory.
+</span>  <span class="n">local_repository</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"jdk"</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span><span class="p">,</span> <span class="n">build_file</span> <span class="o">=</span> <span class="s">"BUILD.jdk"</span><span class="p">)</span>
+  <span class="n">bind</span><span class="p">(</span><span class="s">"@jdk//jdk"</span><span class="p">,</span> <span class="s">"jdk"</span><span class="p">)</span>  <span class="c1"># also add a filegroup("jdk", "//external:jdk")
+</span>  <span class="n">java_toolchain</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"toolchain"</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">.</span><span class="n">java_version</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">.</span><span class="n">java_version</span><span class="p">)</span>
+  <span class="c1"># The magic __BAZEL_*__ variable could be set so we don’t
+</span>  <span class="c1"># redownload the repository if possible. This install_target
+</span>  <span class="c1"># should leverage the work already done on remote repositories.
+</span>  <span class="c1"># This should build and copy the result into the tools directory with
+</span>  <span class="c1"># The corresponding exports_files now.
+</span>  <span class="n">install_target</span><span class="p">(</span><span class="n">__BAZEL_REPOSITORY__</span><span class="p">,</span> <span class="n">__BAZEL_VERSION__</span><span class="p">,</span> <span class="s">"//src/java_tools/buildjar:JavaBuilder_deploy.jar"</span><span class="p">)</span>
   <span class="n">install_target</span><span class="p">(</span><span class="n">__BAZEL_REPOSITORY__</span><span class="p">,</span> <span class="n">__BAZEL_VERSION__</span><span class="p">,</span> <span class="s">"//src/java_tools/buildjar:JavaBuilder_deploy.jar"</span><span class="p">)</span>
   <span class="n">copy</span><span class="p">(</span><span class="s">"https://ijar_url"</span><span class="p">,</span> <span class="s">"ijar"</span><span class="p">)</span>
 
 
 
-<span class="c"># Load the package attributes.</span>
-<span class="c"># - attrs should be written and value will be replaced by the user-provided</span>
-<span class="c"># one if any</span>
-<span class="c"># - query is a query object restricted to the target package and resolving label</span>
-<span class="c"># relatively to the target package. This object should also be able to search</span>
-<span class="c"># for repository binding</span>
-<span class="c"># Note that the query will resolve in the actual tools directory, not the hidden</span>
-<span class="c"># one if it exists whereas the generation only happens in the hidden one.</span>
-<span class="k">def</span> <span class="nf">load_method</span><span class="p">(</span><span class="n">attrs</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-  <span class="n">java_toolchain</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">getOne</span><span class="p">(</span><span class="n">kind</span><span class="p">(</span><span class="s">"java_toolchain"</span><span class="p">,</span> <span class="s">"..."</span><span class="p">))</span>
+<span class="c1"># Load the package attributes.
+# - attrs should be written and value will be replaced by the user-provided
+# one if any
+# - query is a query object restricted to the target package and resolving label
+# relatively to the target package. This object should also be able to search
+# for repository binding
+# Note that the query will resolve in the actual tools directory, not the hidden
+# one if it exists whereas the generation only happens in the hidden one.
+</span><span class="k">def</span> <span class="nf">load_method</span><span class="p">(</span><span class="n">attrs</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+  <span class="n">java_toolchain</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="n">getOne</span><span class="p">(</span><span class="n">kind</span><span class="p">(</span><span class="s">"java_toolchain"</span><span class="p">,</span> <span class="s">"..."</span><span class="p">))</span>
   <span class="k">if</span> <span class="n">java_toolchain</span><span class="p">:</span>
-    <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_version</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">java_toolchain</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">java_toolchain</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-  <span class="n">jdk</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">getOne</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="s">"name"</span><span class="p">,</span> <span class="s">"jdk"</span><span class="p">,</span> <span class="n">kind</span><span class="p">(</span><span class="s">"local_repository"</span><span class="p">,</span> <span class="s">"..."</span><span class="p">)))</span>
+    <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_version</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">java_toolchain</span><span class="p">.</span><span class="n">source</span><span class="p">,</span> <span class="n">java_toolchain</span><span class="p">.</span><span class="n">target</span><span class="p">)</span>
+  <span class="n">jdk</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="n">getOne</span><span class="p">(</span><span class="n">attr</span><span class="p">(</span><span class="s">"name"</span><span class="p">,</span> <span class="s">"jdk"</span><span class="p">,</span> <span class="n">kind</span><span class="p">(</span><span class="s">"local_repository"</span><span class="p">,</span> <span class="s">"..."</span><span class="p">)))</span>
   <span class="k">if</span> <span class="n">jdk</span><span class="p">:</span>
-    <span class="n">attrs</span><span class="o">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">jdk</span><span class="o">.</span><span class="n">path</span>
-</code></pre>
-</div>
+    <span class="n">attrs</span><span class="p">.</span><span class="n">jdk_path</span> <span class="o">=</span> <span class="n">jdk</span><span class="p">.</span><span class="n">path</span>
+</code></pre></div></div>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: bazel init a.k.a ./configure for Bazel&body=Documentation URL: https://docs.bazel.build/designs/2015/03/06/bazel-init.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#i-rationale">I. Rationale</a></li>
+<li class="toc-entry toc-h2"><a href="#ii-considered-use-cases">II. Considered use-cases</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#iii-requirements">III. Requirements</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#bazel-init-should">bazel init should:</a></li>
+<li class="toc-entry toc-h3"><a href="#bazel-init-could">bazel init could:</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#iv-user-interface">IV. User interface</a></li>
+<li class="toc-entry toc-h2"><a href="#v-developer-interface">V. Developer interface</a></li>
+<li class="toc-entry toc-h2"><a href="#vi-implementation-plan">VI. Implementation plan</a></li>
+<li class="toc-entry toc-h2"><a href="#appendix-a-various-comments">Appendix A. Various comments</a></li>
+<li class="toc-entry toc-h2"><a href="#appendix-b-skylark-like-code-examples-of-configuration-functions">Appendix B. Skylark-like code examples of configuration functions</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>

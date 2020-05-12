@@ -33,7 +33,7 @@
     <link rel="canonical" href="/designs/2017/03/03/label-keyed-string-dict-type.html">
 
     <!-- Webfont -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500|Source+Code+Pro:400,500,700" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,500,700|Open+Sans:400,600,700,800" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
@@ -122,15 +122,9 @@
     </nav>
 
 
-    <div class="page-title-bar">
-      <div class="container">
-        <h1>Contribute</h1>
-      </div>
-    </div>
-
     <div class="container vpad">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-md-2">
           <a class="btn btn-default btn-lg btn-block sidebar-toggle"
               data-toggle="collapse" href="#sidebar-nav" aria-expanded="false"
               aria-controls="sidebar-nav">
@@ -167,7 +161,7 @@
             </ul>
           </nav>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-8">
           <h1 id="design-document-label-keyed-string-dictionary-type-for-build-attributes">Design Document: Label-keyed String Dictionary Type for Build Attributes</h1>
 
 <p><strong>Design documents are not descriptions of the current functionality of Bazel.
@@ -196,7 +190,7 @@ those same flags.</p>
 
 <p>An example incorporating both testing and setting such flags:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>flag_rule(
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flag_rule(
     name = "beep",
     values = ["boop", "bop", "bump"],
     default = "bump"
@@ -226,8 +220,7 @@ library_rule(
       "//conditions:default": [":other_dep"]
     })
 )
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="new-attribute-type-label_keyed_string_dict">New attribute type: LABEL_KEYED_STRING_DICT</h2>
 <p>In order to handle these flag values, the BUILD language will need the ability
@@ -310,6 +303,25 @@ value</li>
 follow them</li>
 </ul>
 
+        </div>
+
+        <div class="col-md-2 sticky-sidebar">
+          <div class="right-sidebar">
+            <ul class="gh-links">
+                <li><a href="https://github.com/bazelbuild/bazel/issues/new?title=Documentation issue: Label-keyed String Dictionary Type for Build Attributes&body=Documentation URL: https://docs.bazel.build/designs/2017/03/03/label-keyed-string-dict-type.html&labels=type: documentation"><i class="fa fa-github"></i> Create issue</a></li>
+            </ul>
+            <ul class="page-toc">
+<li class="toc-entry toc-h2"><a href="#backgroundmotivation">Background/Motivation</a></li>
+<li class="toc-entry toc-h2"><a href="#new-attribute-type-label_keyed_string_dict">New attribute type: LABEL_KEYED_STRING_DICT</a>
+<ul class="page-toc-sublist">
+<li class="toc-entry toc-h3"><a href="#native-rule-representation">Native rule representation</a></li>
+<li class="toc-entry toc-h3"><a href="#skylark-representation">Skylark representation</a></li>
+<li class="toc-entry toc-h3"><a href="#handling-collisions-when-converting-attribute-values-from-skylark">Handling collisions when converting attribute values from Skylark</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#testing-plan">Testing Plan</a></li>
+</ul>
+          </div>
         </div>
       </div>
     </div>
